@@ -15,14 +15,14 @@ public class Cuenta {
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
-    saldo = 0;
+    saldo = 0;//no tiene sentido inicializarla asi si ya tiene ese valor por defecto, ver que pasa si no existe este constructor y no se le pasa el parametro 
   }
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
   }
 
-  public void setMovimientos(List<Movimiento> movimientos) {
+  public void setMovimientos(List<Movimiento> movimientos) {//esto rompe con la inmutabilidad, los movimientos no deberian poder cambiarse porque perdes el registro real
     this.movimientos = movimientos;
   }
 
@@ -31,11 +31,11 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
+    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {//deberia usar el metodo getMovimientosA y pasarle la fecha de hoy, no getMovimientos ademas de que no tiene sentido si usara ese porque podria simplemente usar el atributo
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//raro deberia ser un mensaje en cuenta no en movimiento el agregar un movimiento (feature envy)
   }
 
   public void sacar(double cuanto) {
@@ -51,7 +51,7 @@ public class Cuenta {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
           + " diarios, límite: " + limite);
     }
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);//Devuelta lo de la responsabilidad de agregarA(this) (feature envy)
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
@@ -74,7 +74,7 @@ public class Cuenta {
     return saldo;
   }
 
-  public void setSaldo(double saldo) {
+  public void setSaldo(double saldo) {//este tampoco deberia estar porque tambien rompe con la logica de los movimientos y la inmutabilidad de la clase
     this.saldo = saldo;
   }
 
