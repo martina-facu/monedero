@@ -22,10 +22,6 @@ public class Cuenta {
     saldo = montoInicial;
   }
 
-  public void setMovimientos(List<Movimiento> movimientos) {//Rompe con la inmutabilidad pero lo dejo por los test, no deberian poder usarlo otras clases del dominio
-    this.movimientos = movimientos;
-  }
-
   public void poner(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
@@ -81,9 +77,5 @@ public class Cuenta {
   public double getSaldo() {
     return saldo;
   }
-
-  public void setSaldo(double saldo) {//Rompe con la inmutabilidad pero lo dejo por los test, no deberian poder usarlo otras clases del dominio
-    this.saldo = saldo;
-  }
-
+  
 }
