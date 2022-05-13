@@ -19,18 +19,19 @@ public class MonederoTest {
   }
   
   @Test
-  void elSaldoInicialDeLaCuentaEsCero() {	
+  void ElSaldoInicialDeLaCuentaEsCero() {	
     assertEquals(0, new Cuenta().getSaldo());
   }
   
   @Test
-  void elSaldoInicialDeLaCuentaEs200() {	
+  void ElSaldoInicialDeLaCuentaEs200() {	
     assertEquals(200, new Cuenta(200).getSaldo());
   }
   
   @Test
   void Poner() {
     cuenta.poner(1500);
+    assertEquals(1500, cuenta.getSaldo());
   }
 
   @Test
@@ -39,10 +40,11 @@ public class MonederoTest {
   }
 
   @Test
-  void TresDepositos() {
+  void ElSaldoDespuesDeTresDepositosEs3856() {
     cuenta.poner(1500);
     cuenta.poner(456);
     cuenta.poner(1900);
+    assertEquals(3856, cuenta.getSaldo());
   }
 
   @Test
@@ -64,7 +66,7 @@ public class MonederoTest {
   }
 
   @Test
-  public void ExtraerMasDe1000() {
+  public void ExtraerMasDelMaximoDiario() {
     assertThrows(MaximoExtraccionDiarioException.class, () -> {
       cuenta.setSaldo(5000);
       cuenta.sacar(1001);
