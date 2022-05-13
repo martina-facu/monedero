@@ -22,7 +22,7 @@ public class Cuenta {
     saldo = montoInicial;
   }
 
-  public void setMovimientos(List<Movimiento> movimientos) {//esto rompe con la inmutabilidad, los movimientos no deberian poder cambiarse porque perdes el registro real
+  public void setMovimientos(List<Movimiento> movimientos) {//Rompe con la inmutabilidad pero lo dejo por los test, no deberian poder usarlo otras clases del dominio
     this.movimientos = movimientos;
   }
 
@@ -31,7 +31,7 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {//deberia usar el metodo getMovimientosA y pasarle la fecha de hoy, no getMovimientos ademas de que no tiene sentido si usara ese porque podria simplemente usar el atributo
+    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {//(feature envy) el movimiento te puede decir si hubo un deposito en esa fecha (Que en este caso tambien falta) 
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
@@ -61,7 +61,7 @@ public class Cuenta {
 
   public double getMontoExtraidoA(LocalDate fecha) {
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))//(feature envy) el movimiento te puede decir si hubo una extraccion en esa fecha 
         .mapToDouble(Movimiento::getMonto)
         .sum();
   }
@@ -74,7 +74,7 @@ public class Cuenta {
     return saldo;
   }
 
-  public void setSaldo(double saldo) {//este tampoco deberia estar porque tambien rompe con la logica de los movimientos y la inmutabilidad de la clase
+  public void setSaldo(double saldo) {//Rompe con la inmutabilidad pero lo dejo por los test, no deberian poder usarlo otras clases del dominio
     this.saldo = saldo;
   }
 

@@ -17,7 +17,17 @@ public class MonederoTest {
   void init() {
     cuenta = new Cuenta();
   }
-
+  
+  @Test
+  void elSaldoInicialDeLaCuentaEsCero() {	
+    assertEquals(0, new Cuenta().getSaldo());
+  }
+  
+  @Test
+  void elSaldoInicialDeLaCuentaEs200() {	
+    assertEquals(200, new Cuenta(200).getSaldo());
+  }
+  
   @Test
   void Poner() {
     cuenta.poner(1500);
@@ -51,13 +61,6 @@ public class MonederoTest {
           cuenta.setSaldo(90);
           cuenta.sacar(1001);
     });
-  }
-  
-  @Test
-  void chequeoSaldoInicial() {
-	Cuenta cuenta = new Cuenta(0);
-	
-    assertEquals(0, new Cuenta().getSaldo());
   }
 
   @Test
