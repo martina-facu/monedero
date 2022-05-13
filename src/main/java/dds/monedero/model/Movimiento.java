@@ -43,17 +43,4 @@ public class Movimiento {
   public boolean isExtraccion() {
     return !esDeposito;
   }
-
-  public void agregateA(Cuenta cuenta) {//(feature envy) Este metodo hay que volarlo porque ya se encarga la cuenta
-    cuenta.setSaldo(calcularValor(cuenta));
-    cuenta.agregarMovimiento(fecha, monto, esDeposito);
-  }
-
-  public double calcularValor(Cuenta cuenta) {//Este tambien deberia eliminarse porque eliminando el agregarA no es necesario
-    if (esDeposito) {
-      return cuenta.getSaldo() + getMonto();
-    } else {
-      return cuenta.getSaldo() - getMonto();
-    }
-  }
 }

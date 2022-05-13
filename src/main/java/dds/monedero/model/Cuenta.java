@@ -31,11 +31,11 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {//(feature envy) el movimiento te puede decir si hubo un deposito en esa fecha (Que en este caso tambien falta) 
+    if (getCantidadDespositosEn(LocalDate.now()) >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//raro deberia ser un mensaje en cuenta no en movimiento el agregar un movimiento (feature envy)
+    agregarMovimiento(LocalDate.now(), cuanto, true);
   }
 
   public void sacar(double cuanto) {
@@ -51,17 +51,23 @@ public class Cuenta {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
           + " diarios, límite: " + limite);
     }
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);//Devuelta lo de la responsabilidad de agregarA(this) (feature envy)
+    agregarMovimiento(LocalDate.now(), cuanto, false);
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
     Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
     movimientos.add(movimiento);
   }
-
+  
+  public long getCantidadDespositosEn(LocalDate fecha) {
+	  return movimientos.stream()
+			  .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
+			  .count();
+  }
+  
   public double getMontoExtraidoA(LocalDate fecha) {
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))//(feature envy) el movimiento te puede decir si hubo una extraccion en esa fecha 
+        .filter(movimiento -> movimiento.fueExtraido(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
   }
