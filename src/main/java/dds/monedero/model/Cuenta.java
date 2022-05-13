@@ -11,11 +11,11 @@ import java.util.List;
 
 public class Cuenta {
 
-  private double saldo = 0;
+  private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
-    saldo = 0;//no tiene sentido inicializarla asi si ya tiene ese valor por defecto, ver que pasa si no existe este constructor y no se le pasa el parametro 
+    saldo = 0;
   }
 
   public Cuenta(double montoInicial) {
